@@ -48,12 +48,12 @@ describe('Register Use Case', () => {
       password: '123456',
     })
 
-    await expect(() =>
-      sut.execute({
-        name: 'John Doe',
-        email,
-        password: '123456',
-      }),
-    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+    const promise = sut.execute({
+      name: 'John Doe',
+      email,
+      password: '123456',
+    })
+
+    await expect(promise).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })
 })
