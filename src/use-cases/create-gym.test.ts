@@ -1,5 +1,4 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import { Decimal } from '@prisma/client/runtime/library'
 
 import { InMemoryGymsRepository } from '@/repositotories/in-memory/in-memory-gyms-repository'
 import { CreateGymUseCase } from './create-gym'
@@ -18,8 +17,8 @@ describe('Create Gym Use Case', () => {
       title: 'Javascript Gym',
       description: null,
       phone: null,
-      latitude: new Decimal(-27.5950723),
-      longitude: new Decimal(-48.5940098),
+      latitude: -27.5950723,
+      longitude: -48.5940098,
     })
 
     expect(gym.id).toEqual(expect.any(String))

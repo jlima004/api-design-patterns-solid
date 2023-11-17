@@ -24,7 +24,6 @@ export class FetchUserCheckInsHistoryUseCase {
     page,
   }: FetchUserCheckInsHistoryUseCaseRequest): Promise<FetchUserCheckInsHistoryUseCaseResponse> {
     const user = await this.userRepository.findById(userId)
-
     if (!user) throw new ResourceNotFoundError()
 
     const checkIns = await this.checkInsRepository.findManyByUserId(

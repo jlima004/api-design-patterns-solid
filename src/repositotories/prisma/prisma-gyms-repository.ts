@@ -2,6 +2,7 @@ import { Gym, Prisma } from '@prisma/client'
 
 import { FindManyNearbyParams, GymsRepository } from '../gyms-repository'
 import { prisma } from '@/lib/prisma'
+import { PAGINATION_SIZE } from '@/shared/constants'
 
 export class PrismaGymsRepository implements GymsRepository {
   async create(data: Prisma.GymCreateInput): Promise<Gym> {
@@ -45,8 +46,8 @@ export class PrismaGymsRepository implements GymsRepository {
           sort: 'desc',
         },
       },
-      take: 20,
-      skip: (page - 1) * 20,
+      take: PAGINATION_SIZE,
+      skip: (page - 1) * PAGINATION_SIZE,
     })
 
     return gyms
@@ -63,9 +64,9 @@ export class PrismaGymsRepository implements GymsRepository {
     WHERE 
       ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( latitude ) ) ) ) <= 10
     LIMIT 
-      20
+      ${PAGINATION_SIZE}
     OFFSET 
-      (${page} - 1) * 20
+      (${page} - 1) * ${PAGINATION_SIZE}
     `
 
     return gyms

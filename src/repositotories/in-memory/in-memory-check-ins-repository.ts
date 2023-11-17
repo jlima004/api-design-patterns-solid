@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 
 import { CheckInsRepository } from '../check-ins-repository'
 import dayjs from 'dayjs'
+import { PAGINATION_SIZE } from '@/shared/constants'
 
 export class InMemoryCheckInsRepository implements CheckInsRepository {
   public items: CheckIn[] = []
@@ -39,7 +40,7 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
   async findManyByUserId(userId: string, page: number) {
     return this.items
       .filter((item) => item.user_id === userId)
-      .slice((page - 1) * 20, page * 20)
+      .slice((page - 1) * PAGINATION_SIZE, page * PAGINATION_SIZE)
   }
 
   async findById(id: string) {

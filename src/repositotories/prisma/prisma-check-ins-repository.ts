@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 
 import { prisma } from '@/lib/prisma'
 import { CheckInsRepository } from '@/repositotories/check-ins-repository'
+import { PAGINATION_SIZE } from '@/shared/constants'
 
 export class PrismaCheckInsRepository implements CheckInsRepository {
   async create(data: Prisma.CheckInUncheckedCreateInput): Promise<CheckIn> {
@@ -38,8 +39,8 @@ export class PrismaCheckInsRepository implements CheckInsRepository {
       where: {
         user_id: userId,
       },
-      take: 20,
-      skip: (page - 1) * 20,
+      take: PAGINATION_SIZE,
+      skip: (page - 1) * PAGINATION_SIZE,
     })
 
     return checkIns

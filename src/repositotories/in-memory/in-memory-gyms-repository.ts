@@ -3,6 +3,10 @@ import { randomUUID } from 'node:crypto'
 
 import { FindManyNearbyParams, GymsRepository } from '../gyms-repository'
 import { getDistanceBetweenCoordinates } from '@/utils/get-distance-between-coordinates'
+import {
+  MAX_DISTANCE_GYMS_IN_KILOMETERS,
+  PAGINATION_SIZE,
+} from '@/shared/constants'
 
 export class InMemoryGymsRepository implements GymsRepository {
   public items: Gym[] = []
@@ -32,12 +36,10 @@ export class InMemoryGymsRepository implements GymsRepository {
   async searchMany(query: string, page: number) {
     return this.items
       .filter((item) => item.title.includes(query))
-      .slice((page - 1) * 20, page * 20)
+      .slice((page - 1) * PAGINATION_SIZE, page * PAGINATION_SIZE)
   }
 
   async findManyNearby(params: FindManyNearbyParams): Promise<Gym[]> {
-    const MAX_DISTANCE_IN_KILOMETERS = 10
-
     return this.items
       .filter((item) => {
         const distance = getDistanceBetweenCoordinates(
@@ -48,8 +50,8 @@ export class InMemoryGymsRepository implements GymsRepository {
           },
         )
 
-        return distance <= MAX_DISTANCE_IN_KILOMETERS
+        return distance <= MAX_DISTANCE_GYMS_IN_KILOMETERS
       })
-      .slice((params.page - 1) * 20, params.page * 20)
+      .slice((params.page - 1) * PAGINATION_SIZE, params.page * PAGINATION_SIZE)
   }
 }
